@@ -47,8 +47,15 @@ const isTriggered = ref(false);
 const onRefresherrefresh = async () => {
   // 开始动画
   isTriggered.value = true;
+  // 重置猜你喜欢组件数据
+  guessRef.value?.resetData();
   // 加载数据
-  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()]);
+  await Promise.all([
+    getHomeBannerData(),
+    getHomeCategoryData(),
+    getHomeHotData(),
+    guessRef.value?.getMore,
+  ]);
   // 结束动画
   isTriggered.value = false;
 };
