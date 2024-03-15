@@ -1,5 +1,5 @@
 /* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution')
+require('@rushstack/eslint-patch/modern-module-resolution');
 
 module.exports = {
   root: true,
@@ -31,7 +31,6 @@ module.exports = {
       'warn',
       {
         singleQuote: true,
-        semi: false,
         printWidth: 100,
         trailingComma: 'all',
         endOfLine: 'auto',
@@ -42,4 +41,4 @@ module.exports = {
     'vue/no-deprecated-html-element-is': ['off'],
     '@typescript-eslint/no-unused-vars': ['off'],
   },
-}
+};
