@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { getHomeGoodsGuessLikeAPI } from '@/services/home';
-import type { GuessItem, PageParams } from '@/types/global';
+import type { PageParams } from '@/types/global';
+import type { GuessItem } from '@/types/home';
 import { onMounted, ref } from 'vue';
 
 // 分页参数
