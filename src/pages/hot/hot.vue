@@ -39,6 +39,22 @@ const getHotRecommendData = async () => {
 onLoad(() => {
   getHotRecommendData();
 });
+// 滚动触底
+const onScrolltolower = async () => {
+  // 获取当前选项
+  const currSubType = subTypes.value[activeIndex.value];
+  // 当前页码累加
+  currSubType.goodsItems.page++;
+  const res = await getHotRecommendAPI(currentUrlMap!.url, {
+    subType: currSubType.id,
+    page: currSubType.goodsItems.page,
+    pageSize: currSubType.goodsItems.pageSize,
+  });
+  // 新的列表
+  const newSubTypes = res.result.subTypes[activeIndex.value];
+  // 数组追加
+  currSubType.goodsItems.items.push(...newSubTypes.goodsItems.items);
+};
 </script>
 
 <template>
@@ -65,6 +81,7 @@ onLoad(() => {
       v-show="activeIndex === index"
       scroll-y
       class="scroll-view"
+      @scrolltolower="onScrolltolower"
     >
       <view class="goods">
         <navigator
