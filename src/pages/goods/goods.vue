@@ -8,6 +8,12 @@ import { ref } from 'vue';
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync();
 
+// 弹出层的ref
+const popup = ref<{
+  open: (type?: UniHelper.UniPopupType) => void;
+  close: () => void;
+}>();
+
 // 接收参数
 const query = defineProps<{
   id: string;
@@ -77,7 +83,7 @@ const onTapImage = (url: string) => {
           <text class="label">送至</text>
           <text class="text ellipsis"> 请选择收获地址 </text>
         </view>
-        <view class="item arrow">
+        <view @tap="popup?.open()" class="item arrow">
           <text class="label">服务</text>
           <text class="text ellipsis"> 无忧退 快速退款 免费包邮 </text>
         </view>
@@ -147,6 +153,13 @@ const onTapImage = (url: string) => {
       <view class="buynow"> 立即购买 </view>
     </view>
   </view>
+
+  <!-- UniUi弹出层 -->
+  <uni-popup ref="popup" background-color="#fff" type="bottom">
+    <view>1</view>
+    <view>2</view>
+    <button @tap="popup?.close()">关闭弹出层</button>
+  </uni-popup>
 </template>
 
 <style lang="scss">
