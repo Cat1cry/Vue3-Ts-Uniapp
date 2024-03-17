@@ -9,6 +9,7 @@ import { onLoad } from '@dcloudio/uni-app';
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home';
 import { getHomeBannerAPI, getHomeCategoryAPI, getHomeHotAPI } from '@/services/home';
 import type { XtxGuessInstance } from '@/components/components';
+import { useGuessList } from '@/composables';
 
 const bannerList = ref<BannerItem[]>([]);
 const getHomeBannerData = async () => {
@@ -36,15 +37,10 @@ onLoad(async () => {
   isLoading.value = false;
 });
 
-// 获取猜你喜欢组件实例
-const guessRef = ref<XtxGuessInstance>();
+const { guessRef, onScrolltolower } = useGuessList();
 
 const isLoading = ref(false);
 
-// 滚动触底
-const onScrolltolower = () => {
-  guessRef.value?.getMore();
-};
 // 下拉刷新
 const isTriggered = ref(false);
 const onRefresherrefresh = async () => {
