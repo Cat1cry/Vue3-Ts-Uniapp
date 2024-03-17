@@ -1,7 +1,8 @@
 // 获取屏幕边界到安全区域距离
 <script setup lang="ts">
 import { getMemberProfileAPI, putMemberProfileAPI } from '@/services/profile';
-import type { ProfileDetail } from '@/types/member';
+import { useMemberStore } from '@/stores';
+import type { Gender, ProfileDetail } from '@/types/member';
 import { onLoad } from '@dcloudio/uni-app';
 import { ref } from 'vue';
 
@@ -17,6 +18,8 @@ const getMemberProfileData = async () => {
 onLoad(() => {
   getMemberProfileData();
 });
+
+const memberStore = useMemberStore();
 
 // 修改头像
 const onAvatarChange = () => {
@@ -35,7 +38,10 @@ const onAvatarChange = () => {
         success: (res) => {
           if (res.statusCode === 200) {
             const avatar = JSON.parse(res.data).result.avatar;
+            // 个人信息页更新
             profile.value!.avatar = avatar;
+            // Stroe 更新
+            memberStore.profile!.avatar = avatar;
             uni.showToast({
               icon: 'success',
               title: '修改成功',
@@ -51,15 +57,26 @@ const onAvatarChange = () => {
     },
   });
 };
+
+// 修改性别
+const onGenderChange: UniHelper.RadioGroupOnChange = (ev) => {
+  profile.value.gender = ev.detail.value as Gender;
+};
+
 // 点击保存 提交表单
 const onSubmit = async () => {
   const res = await putMemberProfileAPI({
     nickname: profile.value?.nickname,
+    gender: profile.value?.gender,
   });
-  uni.showToast({
-    icon: 'success',
-    title: '修改成功',
-  });
+  memberStore.profile!.nickname = res.result.nickname;
+  setTimeout(() => {
+    uni.showToast({
+      icon: 'success',
+      title: '修改成功',
+    });
+  }, 500);
+  uni.navigateBack();
 };
 </script>
 
@@ -91,7 +108,7 @@ const onSubmit = async () => {
         </view>
         <view class="form-item">
           <text class="label">性别</text>
-          <radio-group>
+          <radio-group @change="onGenderChange">
             <label class="radio">
               <radio value="男" color="#27ba9b" :checked="profile?.gender === '男'" />
               男
