@@ -16,7 +16,7 @@ const orderTypes = [
   { type: 4, text: '待评价', icon: 'icon-comment' },
 ];
 // 获取会员信息
-const { profile } = useMemberStore();
+const memberStore = useMemberStore();
 const { guessRef, onScrolltolower } = useGuessList();
 </script>
 
@@ -25,12 +25,14 @@ const { guessRef, onScrolltolower } = useGuessList();
     <!-- 个人资料 -->
     <view class="profile" :style="{ paddingTop: safeAreaInsets!.top + 'px' }">
       <!-- 情况1：已登录 -->
-      <view class="overview" v-if="profile">
+      <view class="overview" v-if="memberStore.profile">
         <navigator url="/pagesMember/profile/profile" hover-class="none">
-          <image class="avatar" mode="aspectFill" :src="profile.avatar"></image>
+          <image class="avatar" mode="aspectFill" :src="memberStore.profile.avatar"></image>
         </navigator>
         <view class="meta">
-          <view class="nickname"> {{ profile.nickname || profile.account }} </view>
+          <view class="nickname">
+            {{ memberStore.profile.nickname || memberStore.profile.account }}
+          </view>
           <navigator class="extra" url="/pagesMember/profile/profile" hover-class="none">
             <text class="update">更新头像昵称</text>
           </navigator>
